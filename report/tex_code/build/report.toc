@@ -1,0 +1,17 @@
+\select@language {portuguese}
+\contentsline {chapter}{\numberline {1}P\IeC {\^e}ndulo Impulsionado}{2}{chapter.1}
+\contentsline {section}{\numberline {1.1}Dedu\IeC {\c c}\IeC {\~a}o das equa\IeC {\c c}\IeC {\~o}es}{2}{section.1.1}
+\contentsline {section}{\numberline {1.2}Adequando para o m\IeC {\'e}todo de Runge-Kutta de 4\IeC {\textordfeminine } Ordem}{5}{section.1.2}
+\contentsline {section}{\numberline {1.3}Mudan\IeC {\c c}a do ponto est\IeC {\'a}vel}{7}{section.1.3}
+\contentsline {section}{\numberline {1.4}Movimento ca\IeC {\'o}tico do p\IeC {\^e}ndulo impulsionado}{10}{section.1.4}
+\contentsline {chapter}{\numberline {2}O P\IeC {\^e}ndulo Duplo}{12}{chapter.2}
+\contentsline {section}{\numberline {2.1}Dedu\IeC {\c c}\IeC {\~a}o das equa\IeC {\c c}\IeC {\~o}es}{12}{section.2.1}
+\contentsline {section}{\numberline {2.2}Adequando para o m\IeC {\'e}todo de Runge-Kutta de 4\IeC {\textordfeminine } Ordem}{15}{section.2.2}
+\contentsline {section}{\numberline {2.3}Movimento ca\IeC {\'o}tico do p\IeC {\^e}ndulo duplo}{17}{section.2.3}
+\contentsline {chapter}{Conclus\IeC {\~o}es}{20}{chapter*.2}
+\contentsline {chapter}{Ap\IeC {\^e}ndice A - M\IeC {\'e}todo de Runge-Kutta de 4\IeC {\textordfeminine } Ordem}{21}{chapter*.3}
+\contentsline {section}{Apresenta\IeC {\c c}\IeC {\~a}o}{21}{section*.4}
+\contentsline {section}{Generalizando para v\IeC {\'a}rias vari\IeC {\'a}veis}{22}{section*.5}
+\contentsline {chapter}{Ap\IeC {\^e}ndice B \IeC {\textendash } Frameworks Utilizados}{23}{chapter*.6}
+\contentsline {chapter}{Ap\IeC {\^e}ndice C \IeC {\textendash } Links para as simula\IeC {\c c}\IeC {\~o}es}{24}{chapter*.7}
+\contentsline {chapter}{Bibliografia}{25}{chapter*.8}

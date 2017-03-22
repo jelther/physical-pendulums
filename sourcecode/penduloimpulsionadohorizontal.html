@@ -1,0 +1,784 @@
+  <!DOCTYPE html> 
+  <html>   
+  <head>     
+    <title>Pêndulo Impulsionado Horizontalmente - Método Runge-Kutta de 4ª Ordem</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">     
+    <meta charset="utf-8">
+    <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      .canvas {
+        border : 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row">
+        
+        <h1>Pêndulo Impulsionado Horizontalmente <small>Método Runge-Kutta de 4ª Ordem</small></h1>
+
+        <hr>
+       
+        <h4>Este aplicativo visa fornecer uma simulação computacional para o pêndulo Impulsionado por uma força horizontal em seu pivô.</h4>
+
+        <blockquote>
+          <p>Utilizando o mouse, você pode definir a posição inicial da bolinha verde no plano.</p>
+          <p>Você pode ocultar os gráficos para melhorar a performance do applet</p>
+        </blockquote>
+
+        Descritivo dos botões do applet.
+        <ol>          
+          <li>"Iniciar" começa a animação</li>
+          <li>"Pausar" pausa a animação</li>
+          <li>"Reiniciar" limpa e inicia o applet logo em seguida</li>
+        </ol>
+                        
+        <hr>
+
+        <div class="col-xs-12">
+
+            <div class="row">                            
+
+                <div class="col-xs-2">
+                  <div class="form-group">
+                    <label for="comprimento_pendulo1">Compr. Pêndulo 1 (m) </label>
+                    <input type="text" class="form-control" id="comprimento_pendulo1" readonly>                    
+                  </div>
+                </div>
+				
+				        <div class="col-xs-2">
+                   <div class="form-group">
+                    <label for="angulo_inicial_visualizacao1">Ângulo Inicial 1 (graus)</label>
+                    <input type="text" class="form-control" id="angulo_inicial_visualizacao1" readonly>
+                  </div>
+                </div>   
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="damping">Coef. de amortecimento (0-100)</label>
+                      <input type="range" class="form-control travar" id="damping" min="0" max="100" step="1" value="1">
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="form-group">
+                      <label for="damping-text">Valor</label>
+                      <input type="text" class="form-control nao-resetar" id="damping-text" readonly>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row">             
+			  
+              <div class="col-xs-2">
+                  <div class="form-group">
+                    <label for="vel_angular_inicial1">Vel. Ang. 1 (rad/s)</label>
+                    <input type="range" class="form-control travar" id="vel_angular_inicial1" min="-5" max="5" step="0.1" value="0">
+                  </div>
+              </div>
+
+              <div class="col-xs-1">
+                  <div class="form-group">
+                    <label for="vel_angular_inicial1-text">Valor</label>
+                    <input type="text" class="form-control nao-resetar" id="vel_angular_inicial1-text" readonly>
+                  </div>
+              </div>
+
+
+              <div class="col-xs-2">           
+                <div class="form-group">
+                      <label for="massa1">Massa 1 (kg) </label>
+                      <input type="range" class="form-control travar" id="massa1" min="1" max="25" step="1">
+                </div>
+              </div>
+
+              <div class="col-xs-1">
+                  <div class="form-group">
+                    <label for="massa1-text">Valor</label>
+                    <input type="text" class="form-control nao-resetar" id="massa1-text" readonly>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="amp">Amp. (0-1) (m)</label>
+                    <input type="range" class="form-control travar" id="amp" min="0" max="1" step="0.1" value="0.1">
+                  </div>
+              </div>
+
+              <div class="col-md-1">
+                  <div class="form-group">
+                    <label for="amp-text">Valor</label>
+                    <input type="text" class="form-control nao-resetar" id="amp-text" readonly>
+                  </div>
+              </div>
+        
+           
+          </div>
+
+
+            <div class="row">          
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="omegad">Omega d (hertz) </label>
+                    <input type="range" class="form-control travar" id="omegad" min="0" max="10" step="0.01">
+                  </div>
+              </div>
+
+              <div class="col-md-1">
+                  <div class="form-group">
+                    <label for="omegad-text">Valor</label>
+                    <input type="text" class="form-control nao-resetar" id="omegad-text" readonly>
+                  </div>
+              </div> 
+
+              <div class="col-xs-3">
+                  <div class="form-group">
+                    <label for="gravidade">Gravidade (m/s²)</label>
+                    <input type="range" class="form-control travar" id="gravidade" min="0" max="10" step="0.1" value="9.8">
+                  </div>
+              </div>             
+
+              <div class="col-xs-1">
+                  <div class="form-group">
+                    <label for="gravidade-text">Valor</label>
+                    <input type="text" class="form-control nao-resetar" id="gravidade-text" readonly>
+                  </div>
+              </div>
+
+              <div class="col-xs-2">
+                  <div class="form-group">
+                    <label for="click-comprimento-pendulo">Comp. Pendulo Inteiro</label>
+                    <input type="checkbox" id="click-comprimento-pendulo" class="travar">
+                  </div>
+              </div>
+
+              <div class="col-xs-2">
+                  <div class="form-group">
+                    <label for="click-esfera1-animacao">Iniciar Animação ao soltar esfera 1</label>
+                    <input type="checkbox" id="click-esfera1-animacao" class="travar">
+                  </div>
+              </div>
+
+            </div>
+            
+            <button class="btn btn-default" id="iniciar">Iniciar</button>            
+            <button class="btn btn-default" id="pausar">Pausar</button>
+            <button class="btn btn-default" id="reiniciar">Reiniciar Posição</button>
+			
+  			<button class="btn btn-default" id="grafico1-btn">Mostrar/Ocultar Ângulo X Tempo </button>
+  			<button class="btn btn-default" id="grafico2-btn">Mostrar/Ocultar Diagrama de Fase</button>
+          
+        </div>
+
+      </div>
+    </div>
+
+     <div class="container">
+      <div class="row">
+        <hr>      
+                  
+         <div class="col-xs-12">
+            <div id="animacao" class="canvas"></div>    
+         </div>        
+        
+      </div>
+     </div>
+
+    <div class="container">
+        <div class="row">
+        <hr>
+        <div class="col-xs-6">
+		  <div id="grafico1"  style="height:300px ; width:500px;">   </div>
+       </div>
+	   
+	      <div class="col-xs-6">
+		  <div id="grafico2"  style="height:300px ; width:500px;">   </div>
+       </div>
+	   
+      </div>
+     </div>
+      	 
+     <div class="container">
+      <div class="row">
+        <hr>         
+        Desenvolvido em HTML5 + JS + KineticJS Framework + CanvasJS por Jelther Gonçalves<br>
+        <hr>
+      </div>
+     </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->    
+    <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>    
+    <script type="text/javascript" src="kinetic-v5.0.1.js"></script>     
+    <script type="text/javascript" src="canvasjs.min.js"></script>    
+
+    <script type="text/javascript">
+		       	  
+	  var pontosesfera1 = [];	  
+	  
+	  var faseesfera1 = [];
+	  	  
+  	  var grafico1 = new CanvasJS.Chart("grafico1",{
+        	title :{
+        		text: "Tempo decorrido em segundos no eixo X pelo Ângulo com a vertical feito pelo pêndulo em Y"
+        	},
+        	axisX: {						
+        		title: "Tempo (s)"
+        	},
+        	axisY: {						
+        		title: "Ângulo (rad)"			
+        	},
+        	data: [  		  		    
+  		    {
+        		type: "line",
+  			    color : "green",
+        		dataPoints : 	pontosesfera1
+        	}]
+      });
+  	
+  	  grafico1.render();	
+	  
+      var grafico2 = new CanvasJS.Chart("grafico2",{
+        	title :{
+        		text: "Diagrama de fase : No eixo Y a velocidade angular e no eixo X a posição angular"
+        	},
+        	axisX: {						
+        		title: "Pos. Ang. (rad)"
+        	},
+        	axisY: {						
+        		title: "V. Ang. (rad/s)"
+        	},
+        	data: [	
+  	     	{
+        		type: "line",
+  			    color : "green",
+        		dataPoints : 	faseesfera1
+        	}]
+      });
+  	
+  	  grafico2.render();
+	       
+      var dadostracoPendulo1 = [];
+     
+      var angulo_inicial1 = 0;         
+      
+      var gravidade = 0;
+	  	      
+      var Amp = 0;
+      var omega0 = 0;      
+      var omegad = 0;
+      var periodo = 0;      
+
+      var comprimento_pendulo1 = 0;
+
+      var b_damping = 0;
+      
+      var escalaPendulo = 50;
+
+      //massa do pendulo
+      var massa1 = 0;      
+      
+      //variaveis para o runge-kutta
+      var theta_n_1 = 0;
+      var vel_angular_n_1 = 0;         
+	  var tempo_n = 0;
+
+      //tempo
+      var t = 0;  	  
+
+  	  function f(tempo,theta,vel_angular) {	      		
+       // return -2*beta*vel_angular -Math.pow(omega0,2)*Math.sin(theta) + Amp*Math.cos(omegad * tempo) ;    			   
+  	   //temp = -(gravidade + Amp*omegad*omegad*Math.cos(omegad*tempo))*Math.sin(theta);
+       temp = -gravidade*Math.sin(theta);
+       temp = temp + Amp*omegad*omegad*Math.cos(omegad*tempo)*Math.cos(theta);
+  	   temp = temp/(comprimento_pendulo1);
+       temp = temp -(1/2)*(b_damping/massa1)*vel_angular;
+  	   return temp;	   
+  	  }
+
+      function g(tempo,theta,vel_angular) {   
+        return vel_angular;
+      }
+
+      function t_n(tempo,theta,vel_angular) {
+        return 1;
+      }
+      	   
+      function rungeKuttaPendulo(timediff) {	
+
+        //o passo é definido pela diferença de tempo entre os frames        
+        var h = timediff/1000;                       
+
+        var a = [];
+        var b = [];
+        var c = [];
+        var d = [];
+
+        a[1] = g(tempo_n, theta_n_1 , vel_angular_n_1);
+        a[2] = f(tempo_n, theta_n_1 , vel_angular_n_1);
+        a[3] = t_n(tempo_n, theta_n_1 , vel_angular_n_1);
+
+        b[1] = g(tempo_n + (h/2)*a[3] , theta_n_1 + (h/2)*a[1] , vel_angular_n_1 + (h/2)*a[2] );
+        b[2] = f(tempo_n + (h/2)*a[3] , theta_n_1 + (h/2)*a[1] , vel_angular_n_1 + (h/2)*a[2] );
+        b[3] = t_n(tempo_n + (h/2)*a[3] , theta_n_1 + (h/2)*a[1] , vel_angular_n_1 + (h/2)*a[2] );
+		
+        c[1] = g(tempo_n + (h/2)*b[3] , theta_n_1 + (h/2)*b[1] , vel_angular_n_1 + (h/2)*b[2] );
+        c[2] = f(tempo_n + (h/2)*b[3] , theta_n_1 + (h/2)*b[1] , vel_angular_n_1 + (h/2)*b[2] );
+        c[3] = t_n(tempo_n + (h/2)*b[3] , theta_n_1 + (h/2)*b[1] , vel_angular_n_1 + (h/2)*b[2] );
+
+        d[1] = g(tempo_n + h*c[3] , theta_n_1 + h*c[1] , vel_angular_n_1 + h*c[2] );
+        d[2] = f(tempo_n + h*c[3] , theta_n_1 + h*c[1] , vel_angular_n_1 + h*c[2] );
+        d[3] = t_n(tempo_n + h*c[3] , theta_n_1 + h*c[1] , vel_angular_n_1 + h*c[2] );
+		
+	    
+        theta_n_1 = theta_n_1 + (h/6)*(a[1] + 2*b[1] + 2*c[1] + d[1]); 
+        vel_angular_n_1 = vel_angular_n_1 + (h/6)*(a[2] + 2*b[2] + 2*c[2] + d[2]);     
+        tempo_n = tempo_n + (h/6)*(a[3] + 2*b[3] + 2*c[3] + d[3]); 
+   	
+     		delete a;
+     		delete b;
+     		delete c;
+     		delete d;
+      }       
+
+      function construir() {
+          
+          angulo_inicial1 = 0;
+          
+          stageAnimacao = new Kinetic.Stage({
+            container: 'animacao',
+            width: $("div#animacao").width(),
+            height: 800
+          });
+
+          centroX = stageAnimacao.getWidth() / 2;          
+          centroY = stageAnimacao.getHeight() / 2;       
+
+          layerAnimacao = new Kinetic.Layer();          
+          layerFixo= new Kinetic.Layer();          
+
+          rotuloEixoY = new Kinetic.Text({
+            x: stageAnimacao.getWidth() / 2 + 10,
+            y: 10,
+            text: 'Eixo Y',
+            fontSize: 20,
+            fontFamily: 'Calibri',
+            fill: 'black'
+          });
+
+          eixoY = new Kinetic.Line({
+            points : [stageAnimacao.getWidth() / 2,0,stageAnimacao.getWidth() / 2,stageAnimacao.getHeight()],
+            stroke: 'black',
+            strokeWidth: 1            
+          }); 
+
+          eixoX = new Kinetic.Line({
+            points : [0,stageAnimacao.getHeight()/2,stageAnimacao.getWidth(),stageAnimacao.getHeight() /2],
+            stroke: 'black'            
+          });      
+
+          rotuloEixoX = new Kinetic.Text({
+            x: centroX - 70,
+            y: centroY + 10,
+            text: 'Eixo X',
+            fontSize: 20,
+            fontFamily: 'Calibri',
+            fill: 'black'
+          });
+
+		  fpsText = new Kinetic.Text({
+            x: 10,
+            y: 10,
+            text: 'FPS: ',
+            fontSize: 13,
+            fontFamily: 'Calibri',
+            fill: 'black'
+          });
+		  
+		      PosicaoText1 = new Kinetic.Text({
+            x: 10,
+            y: 30,
+            text: 'Posição esfera 1 (graus em rel. ao eixo Y) : ',
+            fontSize: 13,
+            fontFamily: 'Calibri',
+            fill: 'black'
+          });
+		  
+		  TempoText = new Kinetic.Text({
+            x: 10,
+            y: 70,
+            text: 'Tempo (s): ',
+            fontSize: 13,
+            fontFamily: 'Calibri',
+            fill: 'black'
+          });		  
+		      
+
+          linhaPendulo1 = new Kinetic.Line({
+            points: [
+              centroX,
+              centroY,
+              centroX,
+              centroY + 50,
+            ],
+            stroke: 'green',
+            strokeWidth: 2,
+            lineCap: 'round',
+            lineJoin: 'round'
+          });   		  		  
+
+          tracoPendulo1 = new Kinetic.Line({
+            points: dadostracoPendulo1,
+            stroke: 'green',
+            strokeWidth: 1,
+            lineCap: 'round',
+            lineJoin: 'round'
+          }); 
+
+   	      esfera1 = new Kinetic.Circle({
+            x: centroX,
+            y: centroY + 50,
+            radius: 10,
+            fill: 'green',
+            stroke: 'black',
+            strokeWidth: 3 ,
+            draggable: true,
+            dragBoundFunc : function (pos) {            
+
+              //pega o comprimento do pendulo pela posicao q está sendo colocada a esfera
+              comprimento_pendulo1 = Math.sqrt( Math.pow( pos.x - centroX ,2 ) + Math.pow( pos.y - centroY ,2 ) ) / escalaPendulo;
+              if ($("#click-comprimento-pendulo").is(":checked")) {
+                comprimento_pendulo1 = Math.round(comprimento_pendulo1);
+                if (comprimento_pendulo1 == 0) { 
+                  comprimento_pendulo1 = 1;
+                }
+              } 
+
+    		     $("#comprimento_pendulo1").attr('value', comprimento_pendulo1);     		
+
+              //calcula o omega0 com base no comprimento do pendulo
+              //omega0 = Math.sqrt(parseFloat(gravidade)/parseFloat(comprimento_pendulo1));        
+              //beta = parseFloat(c_damping)/(2*parseFloat(massa1)*parseFloat(comprimento_pendulo1));
+              //periodo = 2*Math.PI*(1/omega0); 	  		  
+
+              if ( (pos.x > centroX ) && ( pos.y > centroY ) ) {
+                angulo_inicial1 = parseFloat(Math.atan((pos.x - centroX)/(pos.y - centroY)));                         
+              } else if ( (pos.x > centroX ) && ( pos.y < centroY ) ) {
+                angulo_inicial1 = parseFloat(Math.atan((centroY - pos.y )/( pos.x - centroX )));                         
+                angulo_inicial1 = angulo_inicial1 + Math.PI/2;
+              } else if ( (pos.x < centroX ) && ( pos.y < centroY ) ) {
+                angulo_inicial1 = parseFloat(Math.atan((centroY - pos.y )/( centroX - pos.x )));                         
+                angulo_inicial1 =  - angulo_inicial1 - Math.PI/2;
+              } else {
+                angulo_inicial1 = parseFloat(Math.atan((pos.x - centroX)/(pos.y - centroY)));                         
+              }
+                        
+              esfera1.setX( pos.x );
+              esfera1.setY( pos.y );       
+
+              linhaPendulo1.setPoints([
+                centroX,
+                centroY,
+                pos.x,
+                pos.y,
+              ]);                  
+
+              $("#angulo_inicial_visualizacao1").attr('value', Math.round(angulo_inicial1*(360/(2*Math.PI)) ));                                
+
+              return pos;
+            }
+          });
+
+          //a diciona os objetos ao layer
+          layerFixo.add(eixoY);     
+          layerFixo.add(rotuloEixoY);     
+          layerFixo.add(eixoX);     
+          layerFixo.add(rotuloEixoX);     
+
+          layerFixo.add(fpsText);		  
+          layerFixo.add(PosicaoText1);          
+          layerFixo.add(TempoText);    		  
+
+          layerAnimacao.add(linhaPendulo1);  		                                       
+          layerAnimacao.add(tracoPendulo1);                                          
+          layerAnimacao.add(esfera1);     
+
+		      //joga os layers no stage
+          stageAnimacao.add(layerFixo);
+          stageAnimacao.add(layerAnimacao);                          
+
+          animacao = new Kinetic.Animation(function(frame) {                            
+
+            rungeKuttaPendulo(frame.timeDiff);
+
+		        esfera1.setX( (comprimento_pendulo1*escalaPendulo * Math.sin(theta_n_1)) + centroX + Amp*escalaPendulo*Math.cos(omegad*tempo_n) );
+            esfera1.setY( (comprimento_pendulo1*escalaPendulo * Math.cos(theta_n_1)) + centroY  );    
+           
+            dadostracoPendulo1.push(esfera1.x(),esfera1.y());
+
+      			pontosesfera1.push({ x : frame.time /1000, y : theta_n_1  });      						
+      			faseesfera1.push({ x : theta_n_1, y :  vel_angular_n_1 });
+      			
+      			grafico1.render();		
+      			grafico2.render();		
+            
+            tracoPendulo1.setPoints(dadostracoPendulo1);
+			
+			      //======================
+            //move a linha do pendulo
+            //======================
+            linhaPendulo1.setPoints([
+              centroX + Amp*escalaPendulo*Math.cos(omegad*tempo_n),
+              centroY,
+              (comprimento_pendulo1*escalaPendulo * Math.sin(theta_n_1)) + centroX + Amp*escalaPendulo*Math.cos(omegad*tempo_n),
+              (comprimento_pendulo1*escalaPendulo * Math.cos(theta_n_1)) + centroY ,
+            ]);        
+            //======================   
+
+            fpsText.setText('FPS: ' + Math.round( frame.frameRate ) );
+            TempoText.setText('Tempo (s) : ' + Math.round( frame.time/1000) );			
+      			PosicaoText1.setText('Posição esfera 1 (radianos em rel. ao eixo Y) : ' + theta_n_1 );                                   			
+			            
+            layerFixo.batchDraw();             
+
+          }, layerAnimacao);
+
+          // add cursor styling
+          esfera1.on('mouseover', function() {
+            document.body.style.cursor = 'pointer';
+          });
+
+          esfera1.on('mouseout', function() {
+            document.body.style.cursor = 'default';
+          });
+         	  
+		  // write out drag and drop events
+		  esfera1.on('dragstart', function() {
+  			if (animacao.isRunning) {
+  				animacao.stop();      			
+  			}
+		  });
+         	  
+		 esfera1.on('dragend', function() {	
+
+				theta_n_1 = parseFloat(angulo_inicial1);
+
+        vel_angular_n_1 = $("#vel_angular_inicial1").val();
+				vel_angular_n_1 = parseFloat(vel_angular_n_1);            
+        tempo_n  = 0;
+
+
+				gravidade = $("#gravidade").val();
+				gravidade = parseFloat(gravidade);
+
+        massa1 = $("#massa1").val();          
+				massa1 = parseFloat(massa1);
+
+        b_damping = $("#damping").val();          
+        b_damping = parseFloat(b_damping);
+				
+				dadostracoPendulo1.length = 0;            
+				pontosesfera1.length = 0;				
+        faseesfera1.length = 0;
+
+        omegad = $("#omegad").val();
+				omegad = parseFloat(omegad);
+				omegad = Math.PI * 2 * omegad;
+
+        Amp = $("#amp").val();
+        Amp = parseFloat(Amp);
+							
+				grafico1.render();
+				grafico2.render();
+				
+				if ($("#click-esfera1-animacao").is(":checked")) {
+				
+					if (angulo_inicial1 == 0) {
+						alert('Angulo Inicial da Esfera 1 não pode ser 0!');
+						return;
+					}				
+								
+					animacao.start();			      		             
+				  $(".travar").prop('disabled',true); 
+				}
+
+				animacao.frame.time = 0;           			      			      			
+			  });		           
+          
+      }
+
+      function destruir() {
+
+        animacao.stop();
+        stageAnimacao.destroy();       
+
+        delete animacao;
+        delete esfera1;        
+        delete linhaPendulo1;        
+        delete tracoPendulo1;
+        
+        dadostracoPendulo1.length = 0;
+      	pontosesfera1.length = 0;
+        faseesfera1.length = 0;
+        
+		    grafico1.render();
+        grafico2.render();
+		
+        delete eixoY;
+        delete rotuloEixoY;
+        delete eixoX;
+        delete rotuloEixoX;
+
+        theta_n_1 = 0;        
+        vel_angular_n_1 = 0;        		
+		    tempo_n  = 0;        
+
+        $("input").not(".nao-resetar").attr('value',"");        
+      }
+
+      $(document).ready(function (){   	  			
+
+          $("#gravidade-text").attr('value',$("#gravidade").val());
+          gravidade = $("#gravidade").val();
+
+          $("#gravidade").change(function () {                        
+            $("#gravidade-text").attr('value',$(this).val());
+            gravidade = $(this).val();
+          });
+
+          $("#massa1-text").attr('value',$("#massa1").val());
+          massa1 = $("#massa1").val();          
+
+          $("#massa1").change(function () {                        
+            $("#massa1-text").attr('value',$(this).val());
+            massa1 = $(this).val();            
+          });
+
+          $("#damping-text").attr('value',$("#damping").val());
+          c_damping = $("#damping").val();
+
+          $("#damping").change(function () {                        
+            $("#damping-text").attr('value',$(this).val());
+            c_damping = $(this).val();
+          });
+
+          $("#amp-text").attr('value',$("#amp").val());
+          Amp = $("#amp").val();
+
+          $("#amp").change(function () {                        
+            $("#amp-text").attr('value',$(this).val());
+            Amp = $(this).val();
+          });
+
+          $("#omegad-text").attr('value',$("#omegad").val());
+          omegad = $("#omegad").val();
+
+          $("#omegad").change(function () {                        
+            $("#omegad-text").attr('value',$(this).val());
+            omegad = $(this).val()  ;
+          });
+		  
+    		  $("#vel_angular_inicial1-text").attr('value',$("#vel_angular_inicial1").val());
+    		  vel_angular_n_1 = $("#vel_angular_inicial1").val();
+
+    		  $("#vel_angular_inicial1").change(function () {                        
+      			$("#vel_angular_inicial1-text").attr('value',$(this).val());
+      			vel_angular_n_1 = $(this).val();
+    		  });
+
+          $("#damping-text").attr('value',$("#damping").val());
+          b_damping = $("#damping").val();
+
+          $("#damping").change(function () {                        
+            $("#damping-text").attr('value',$(this).val());
+            b_damping = $(this).val();
+          });
+
+    		  $("#grafico1-btn").click(function () {              
+              $("#grafico1").toggle();
+          });          
+    		 
+    		  $("#grafico2-btn").click(function () {              
+              $("#grafico2").toggle();
+          });        		  
+
+          $("#iniciar").click(function () {      
+		  
+      			if (angulo_inicial1 == 0) {
+      				alert('Angulo Inicial da Esfera 1 não pode ser 0!');
+      				return;
+      			}      			
+
+            theta_n_1 = parseFloat(angulo_inicial1);
+
+            vel_angular_n_1 = $("#vel_angular_inicial1").val();
+            vel_angular_n_1 = parseFloat(vel_angular_n_1);            
+            tempo_n  = 0;
+
+
+            gravidade = $("#gravidade").val();
+            gravidade = parseFloat(gravidade);
+
+            massa1 = $("#massa1").val();          
+            massa1 = parseFloat(massa1);
+
+            b_damping = $("#damping").val();          
+            b_damping = parseFloat(b_damping);
+            
+            dadostracoPendulo1.length = 0;            
+            pontosesfera1.length = 0;       
+            
+            omegad = $("#omegad").val();
+            omegad = parseFloat(omegad);
+            omegad = Math.PI * 2 * omegad;
+
+            Amp = $("#amp").val();
+            Amp = parseFloat(Amp);
+                  
+            grafico1.render();
+            grafico2.render();        
+            			
+            animacao.start();     
+            $(".travar").prop('disabled',true);
+          });
+
+          $("#pausar").click(function () {      
+            animacao.stop();            
+            $(".travar").prop('disabled',false);
+          });
+
+          $("#reiniciar").click(function () {      
+            animacao.stop();            
+            $(".travar").prop('disabled',false);
+            destruir();  
+            construir(); 
+          });
+
+          construir();		  
+      });
+
+    </script>
+ 
+  </body>
+</html>
+
+
+
+
+
+
